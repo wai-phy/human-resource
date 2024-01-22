@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Service;
+
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
+use App\Exceptions\ApiErrorExceptions;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\ClientException;
+
+class ClientApiService
+{
+    public $guzzle;
+
+    private $token = null;
+    protected $defaultHeader = [];
+
+
+    public function __construct()
+    {
+        $this->defaultHeader = [
+            'api-key' => env('API_KEY')
+        ];
+
+        $config = [
+            'base_uri' => env('API_URL'),
+            'headers' => [
+                'api-key' => env('API_KEY'),
+                // 'Authorization' => 'Bearer' . session()->get('auth-token'),
+                'Accept' => 'application/json'
+            ],
+        ];
+        $this->guzzle = new Client($config);
+    }
+
+
+    public function get($url, $params = [])
+    {
+        // dd($url);
+        // dd($params);
+        try {
+            $r = $r = $this->guzzle->request('GET', $url, [
+                'headers' => $this->defaultHeader,
+                'query' => $params
+            ]);
+
+            return $this->toJson($r);
+        } catch (ClientException $e) {
+            throw new \Exception($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+
+    
+    protected function toJson(ResponseInterface $response)
+    {
+        $data = $response->getBody()->getContents();
+
+        return json_decode($data, true);
+    }
+
+}
