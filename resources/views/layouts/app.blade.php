@@ -21,6 +21,10 @@
     {{-- Date Range Picker --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
+    {{-- Sweet Alert  --}}
+    <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
+
+
 
 </head>
 
@@ -165,8 +169,12 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-    {{-- Sweet Alert --}}
+    {{-- Sweet Alert 2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    {{-- Sweet Alert  --}}
+    <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
 
     <script>
         $(function($) {
@@ -202,23 +210,24 @@
                 $(".page-wrapper").addClass("toggled");
             });
 
-            document.addEventListener('click',function(event){
-                if(document.getElementById('show-sidebar').contains(event.target)){
+            document.addEventListener('click', function(event) {
+                if (document.getElementById('show-sidebar').contains(event.target)) {
                     $(".page-wrapper").addClass("toggled");
-                }else if(!document.getElementById('sidebar').contains(event.target)){
+                } else if (!document.getElementById('sidebar').contains(event.target)) {
                     $(".page-wrapper").removeClass("toggled");
                 }
             })
 
-            @if(session('create')){
-                Swal.fire({
-                title: "create",
-                text: "{{session('create')}}",
-                icon: "success"
-            });
-            }
+            @if (session('create'))
+                {
+                    Swal.fire({
+                        title: "create",
+                        text: "{{ session('create') }}",
+                        icon: "success"
+                    });
+                }
             @endif
-           
+
 
         });
     </script>

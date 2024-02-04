@@ -519,3 +519,24 @@ background-color: #4CD195 !important;
   .paginate_button .page-item .active .page-link{
     background-color:#4CD195 !important ;
   }
+
+  /* profile_img preview  */
+
+  .profile_img img{
+    width: 100px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 3px;
+  }
+
+  .profile_img{
+    width: 140px;
+    height: 140px;
+    border-radius: 100%;
+    border: 1px solid #4CD195;
+
+  }
+
+  .dash-border{
+    border-left: 2px dashed #ddd;
+  }

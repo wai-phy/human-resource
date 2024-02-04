@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEmployee extends FormRequest
+class UpdateEmployee extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,11 +21,12 @@ class StoreEmployee extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('employee');
         return [
-            "employee_id" => "required",
+            "employee_id" => "required|unique:users,employee_id," .$id,
             "name" => "required",
-            "phone" => "required|min:9|unique:users,phone|max:11",
-            "email" => "required|email|unique:users,email",
+            "phone" => "required|min:9|max:11|unique:users,phone," . $id,
+            "email" => "required|email|unique:users,email," . $id,
             "nrc_number" => "required",
             "gender" => "required",
             "birthday" => "required",
