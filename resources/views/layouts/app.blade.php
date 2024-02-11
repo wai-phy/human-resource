@@ -11,6 +11,7 @@
     <title>@yield('title')</title>
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- Datatable  --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.material.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
@@ -42,14 +43,13 @@
                 <div class="sidebar-header">
                     <div class="user-pic">
                         <img class="img-responsive img-rounded"
-                            src="https://static.vecteezy.com/system/resources/thumbnails/002/387/693/small/user-profile-icon-free-vector.jpg"
-                            alt="User picture">
+                            src="{{auth()->user()->profile_img_path()}}"
+                            alt="">
                     </div>
                     <div class="user-info">
-                        <span class="user-name">Jhon
-                            <strong>Smith</strong>
+                        <span class="user-name">{{auth()->user()->name}}
                         </span>
-                        <span class="user-role">Administrator</span>
+                        <span class="user-role">{{auth()->user()->department ? auth()->user()->department->title : 'No Department'}}</span>
                         <span class="user-status">
                             <i class="fa fa-circle"></i>
                             <span>Online</span>
@@ -71,6 +71,21 @@
                         <li>
                             <a href="{{ route('employee.index') }}">
                                 <i class="fas fa-users"></i><span>Employees</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('department.index') }}">
+                                <i class="fa-solid fa-people-group"></i><span>Departments</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('role.index') }}">
+                                <i class="fa-solid fa-shield-halved"></i><span>Roles</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('permission.index') }}">
+                                <i class="fa-solid fa-shield-halved"></i><span>Permissions</span>
                             </a>
                         </li>
                         {{-- <li class="sidebar-dropdown">
@@ -107,7 +122,11 @@
             <div class="d-flex justify-content-center">
                 <div class="col-md-8">
                     <div class="d-flex justify-content-between">
-                        <a href="#" id="show-sidebar"><i class="fas fa-bars"></i></a>
+                        @if (request()->is('/'))
+                            <a href="#" id="show-sidebar"><i class="fas fa-bars"></i></a>
+                        @else
+                            <a href="#" id="back-btn"><i class="fa-solid fa-chevron-left"></i></a>
+                        @endif
                         <h5>@yield('title')</h5>
                         <a href=""></a>
                     </div>
@@ -125,7 +144,7 @@
             <div class="d-flex justify-content-center">
                 <div class="col-md-8">
                     <div class="d-flex justify-content-between">
-                        <a href="">
+                        <a href="{{route('home')}}">
                             <i class="fa-solid fa-house"></i>
                             <p class="mb-0">Home</p>
                         </a>
@@ -137,9 +156,9 @@
                             <i class="fa-solid fa-house"></i>
                             <p class="mb-0">Home</p>
                         </a>
-                        <a href="">
-                            <i class="fa-solid fa-house"></i>
-                            <p class="mb-0">Home</p>
+                        <a href="{{route('profile')}}">
+                            <i class="fa-solid fa-user"></i>
+                            <p class="mb-0">Profile</p>
                         </a>
                     </div>
                 </div>
@@ -161,6 +180,8 @@
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
+    <script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
 
     <!-- Laravel Javascript Validation -->
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
@@ -178,6 +199,17 @@
 
     <script>
         $(function($) {
+
+            let token = document.head.querySelector('meta[name="csrf-token"]');
+            if (token) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': token.content
+                    }
+                });
+            } else {
+                console.error('CSRF Token not found');
+            }
 
             $(".sidebar-dropdown > a").click(function() {
                 $(".sidebar-submenu").slideUp(200);
@@ -210,13 +242,15 @@
                 $(".page-wrapper").addClass("toggled");
             });
 
-            document.addEventListener('click', function(event) {
-                if (document.getElementById('show-sidebar').contains(event.target)) {
-                    $(".page-wrapper").addClass("toggled");
-                } else if (!document.getElementById('sidebar').contains(event.target)) {
-                    $(".page-wrapper").removeClass("toggled");
-                }
-            })
+            @if (request()->is('/'))
+                document.addEventListener('click', function(event) {
+                    if (document.getElementById('show-sidebar').contains(event.target)) {
+                        $(".page-wrapper").addClass("toggled");
+                    } else if (!document.getElementById('sidebar').contains(event.target)) {
+                        $(".page-wrapper").removeClass("toggled");
+                    }
+                })
+            @endif
 
             @if (session('create'))
                 {
@@ -228,6 +262,32 @@
                 }
             @endif
 
+            $.extend(true, $.fn.dataTable.defaults, {
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                mark: true,
+                columnDefs: [
+                    {
+                        target: [0],
+                        "class": "control"
+                    },
+                    {
+                        "targets": "no-sort",
+                        "sortable": false
+                    },
+                ],
+                "language": {
+                    "paginate": {
+                        "previous": "<i class='fa-regular fa-circle-left'></i>",
+                        "next": "<i class='fa-regular fa-circle-right'></i>",
+                    }
+                }
+            });
+            $('#back-btn').on("click",function(e){
+                e.preventDefault();
+                window.history.go(-1);
+            })
 
         });
     </script>

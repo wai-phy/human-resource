@@ -24,6 +24,14 @@ class EmployeeRepository
         $employees = User::with('department');
 
         return DataTables::of($employees)
+            ->filterColumn('department_name',function($query, $keyword){
+                $query->whereHas('department',function($q1) use ($keyword){
+                    $q1->where('title','like','%'.$keyword.'%');
+                });
+            })
+            ->editColumn('profile_img', function ($each) {
+                return '<img class="profile-thumbnail" src="'.$each->profile_img_path().'"/><p class="mb-1">'.$each->name.'</p>';
+            })
             ->addColumn('department_name', function ($each) {
                 return $each->department ? $each->department->title : '-';
             })
@@ -46,7 +54,7 @@ class EmployeeRepository
                 $delete_icon = '<a href="#" data-id="'.$each->id.'" class="text-danger delete-btn"><i class="fa-solid fa-trash"></i></a>';
                 return '<div class="action-icon">' . $edit_icon . $info_icon .$delete_icon. '</div>';
             })
-            ->rawColumns(['is_present', 'action'])
+            ->rawColumns(['profile_img','is_present', 'action'])
             ->make(true);
     }
 

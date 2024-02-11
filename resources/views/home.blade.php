@@ -1,28 +1,23 @@
 @extends('layouts.app')
-@section('title','Ninja Hr')
+@section('title', 'Ninja HR')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            </form>
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+    <div class="card">
+        <div class="card-body">
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center">
+                        <img class="profile_img" src="{{ $employee->profile_img_path() }}" alt="">
+                        <div class="py-2 px-2">
+                            <h4>{{ $employee->name }}</h4>
+                            <p class="text-muted mb-2">{{ $employee->employee_id }}</p>
+                            <p class="text-muted mb-2"><span class="badge badge-pill badge-dark">{{ $employee->department ? $employee->department->title : '-' }}</span></p>
                         </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
+                    </div>
                 </div>
-                
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
+
             </div>
+           
         </div>
     </div>
-</div>
 @endsection
