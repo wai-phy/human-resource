@@ -1,17 +1,24 @@
 @extends('layouts.app')
 @section('title', 'Profile')
 @section('content')
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-body">
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="d-flex align-items-center">
+                    <div class="text-center">
                         <img class="profile_img" src="{{ $employee->profile_img_path() }}" alt="">
                         <div class="py-2 px-2">
                             <h4>{{ $employee->name }}</h4>
                             <p class="text-muted mb-2">{{ $employee->employee_id }}</p>
-                            <p class="text-muted mb-2"><span class="badge badge-pill badge-dark">{{ $employee->department ? $employee->department->title : '-' }}</span></p>
+                            <p class="text-muted mb-2"><span
+                                    class="badge badge-pill badge-dark">{{ $employee->department ? $employee->department->title : '-' }}</span>
+                            </p>
+                            <p class="text-muted mb-2">
+                                @foreach ($employee->roles as $role)
+                                    <span class="badge badge-pill badge-primary">{{ $role->name }}</span>
+                                @endforeach
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -41,7 +48,32 @@
                     </div>
                 </div>
             </div>
-           
+
         </div>
     </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <button type="submit" class="btn logout-btn btn-danger block form-control">Logout</button>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.logout-btn').on('click', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/logout',
+                }).done(function(res) {
+                    window.location.reload();
+                })
+
+
+            })
+
+        })
+    </script>
 @endsection

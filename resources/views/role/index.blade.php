@@ -12,6 +12,7 @@
                     <tr>
                         <th class="text-center"></th>
                         <th class="text-center no-sort">Name</th>
+                        <th class="text-center no-sort">Permissions</th>
                         <th class="text-center no-sort">Action</th>
                         <th class="text-center">Updated At</th>
                     </tr>
@@ -38,6 +39,11 @@
                         class: 'text-center'
                     },
                     {
+                        data: 'permissions',
+                        name: 'permissions',
+                        class: 'text-center'
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         class: 'text-center'
@@ -49,7 +55,7 @@
                     },
                 ],
                 order: [
-                    [3, 'desc']
+                    [4, 'desc']
                 ],
                 
             });

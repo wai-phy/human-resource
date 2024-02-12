@@ -24,6 +24,14 @@ class RoleRepository
             ->addColumn('plus-icon', function ($each) {
                 return null;
             })
+            ->addColumn('permissions',function($each){
+                $output = '';
+                foreach($each->permissions as $permission){
+                    $output .= '<span class="badge badge-rounded m-1 badge-primary">'.$permission->name.'</span>';
+                }
+
+                return $output;
+            })
             ->addColumn('action', function ($each) {
                 $edit_icon = '<a href="' . route('role.edit', $each->id) . '" class="text-warning"><i class="fa-solid fa-pen-to-square"></i></a>';
                 $delete_icon = '<a href="#" data-id="'.$each->id.'" class="text-danger delete-btn"><i class="fa-solid fa-trash"></i></a>';
@@ -32,7 +40,7 @@ class RoleRepository
             ->editColumn('updated_at', function ($each) {
                 return Carbon::parse($each->updated_at)->format('Y-m-d H:i:s');
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['permissions','action'])
             ->make(true);
     }
 
@@ -41,6 +49,7 @@ class RoleRepository
         $role = new Role();
         $role->name = $request->name;
         $role->save();
+        $role->givePermissionTo($request->permissions);
         return $role;
     }
 
@@ -56,6 +65,9 @@ class RoleRepository
         $role = Role::findOrFail($id);
         $role->name = $request->name;
         $role->update();
+        $old_permissions = $role->permissions->pluck('name')->toArray();
+        $role->revokePermissionTo($old_permissions);
+        $role->givePermissionTo($request->permissions);
 
         return $role;
     }

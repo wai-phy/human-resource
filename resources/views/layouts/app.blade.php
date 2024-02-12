@@ -25,6 +25,9 @@
     {{-- Sweet Alert  --}}
     <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
 
+    {{-- select 2  --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
 
 </head>
@@ -197,6 +200,9 @@
     {{-- Sweet Alert  --}}
     <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
 
+    {{-- select 2 js  --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
         $(function($) {
 
@@ -287,7 +293,10 @@
             $('#back-btn').on("click",function(e){
                 e.preventDefault();
                 window.history.go(-1);
-            })
+            });
+
+            $('.select-hr').select2();
+
 
         });
     </script>

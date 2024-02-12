@@ -8,6 +8,7 @@ use App\Repository\DataRepo;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreEmployee;
 use App\Http\Requests\UpdateEmployee;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class EmployeeController extends Controller
@@ -32,7 +33,9 @@ class EmployeeController extends Controller
     public function create()
     {
         $departments = $this->repo->createPage();
-        return view('employee.create', compact('departments'));
+        $roles = Role::all();
+        // return $roles;
+        return view('employee.create', compact('departments','roles'));
     }
 
 
@@ -44,9 +47,11 @@ class EmployeeController extends Controller
 
     public function edit($id)
     {
-        $departments = Department::orderBy('title')->get();
         $employee = $this->repo->editPage($id);
-        return view('employee.edit', compact('employee', 'departments'));
+        $departments = Department::orderBy('title')->get();
+        $roles = Role::all();
+        $old_roles = $employee->roles->pluck('id')->toArray();
+        return view('employee.edit', compact('employee', 'departments','roles','old_roles'));
     }
 
     public function update($id, UpdateEmployee $request)

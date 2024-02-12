@@ -53,6 +53,14 @@
                         </select>
                     </div>
                     <div class="md-form">
+                        <label for="">Role (or) Designation</label>
+                        <select name="roles[]" class="form-control select-hr" multiple>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->name }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="md-form">
                         <label for="">Date Of Join</label>
                         <input type="text" name="date_of_join" class="form-control date_of_join">
                     </div>
@@ -110,10 +118,10 @@
                 }
             });
 
-            $('#profile_img').on('change', function(){
+            $('#profile_img').on('change', function() {
                 var file_length = document.getElementById('profile_img').files.length;
                 $('.profile_img').html('');
-                for(i = 0; i < file_length; i++){
+                for (i = 0; i < file_length; i++) {
                     $('.profile_img').append(`<img src="${URL.createObjectURL(event.target.files[i])}"/>`)
                 }
             })

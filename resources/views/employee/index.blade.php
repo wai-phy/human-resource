@@ -16,6 +16,7 @@
                         <th class="text-center">Email</th>
                         <th class="text-center">Phone</th>
                         <th class="text-center no-sort">Department</th>
+                        <th class="text-center no-sort">Role</th>
                         <th class="text-center">Is Present?</th>
                         <th class="text-center no-sort">Action</th>
                         <th class="text-center">Updated At</th>
@@ -63,6 +64,11 @@
                         class: 'text-center'
                     },
                     {
+                        data: 'role',
+                        name: 'role',
+                        class: 'text-center'
+                    },
+                    {
                         data: 'is_present',
                         name: 'is_present',
                         class: 'text-center'
@@ -79,7 +85,7 @@
                     },
                 ],
                 order: [
-                    [8, 'desc']
+                    [9, 'desc']
                 ],
                 
             });

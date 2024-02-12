@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRole;
 use App\Repository\DataRepo;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateRole;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
@@ -29,7 +30,9 @@ class RoleController extends Controller
 
     public function create()
     {
-        return view('role.create');
+        
+        $permissions = Permission::all();
+        return view('role.create',compact('permissions'));
     }
 
 
@@ -41,8 +44,10 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+        $permissions = Permission::all();
         $role = $this->repo->editPage($id);
-        return view('role.edit', compact('role'));
+        $old_permissions = $role->permissions->pluck('id')->toArray();
+        return view('role.edit', compact('role','permissions','old_permissions'));
     }
 
     public function update($id, UpdateRole $request)

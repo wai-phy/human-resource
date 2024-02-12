@@ -48,13 +48,20 @@ class EmployeeRepository
             ->addColumn('plus-icon', function ($each) {
                 return null;
             })
+            ->addColumn('role', function($each){
+                $output = '';
+                foreach($each->roles as $role){
+                    $output .= '<span class="badge badge-primary m-1 badge-pill">'.$role->name.'</span>';
+                }
+                return $output;
+            })
             ->addColumn('action', function ($each) {
                 $edit_icon = '<a href="' . route('employee.edit', $each->id) . '" class="text-warning"><i class="fa-solid fa-pen-to-square"></i></a>';
                 $info_icon = '<a href="' . route('employee.show', $each->id) . '" class="text-primary"><i class="fa-solid fa-circle-info"></i></a>';
                 $delete_icon = '<a href="#" data-id="'.$each->id.'" class="text-danger delete-btn"><i class="fa-solid fa-trash"></i></a>';
                 return '<div class="action-icon">' . $edit_icon . $info_icon .$delete_icon. '</div>';
             })
-            ->rawColumns(['profile_img','is_present', 'action'])
+            ->rawColumns(['role','profile_img','is_present', 'action'])
             ->make(true);
     }
 
@@ -88,6 +95,7 @@ class EmployeeRepository
         $employee->profile_img = $profile_img_name;
         $employee->password =  Hash::make($request->password);
         $employee->save();
+        $employee->syncRoles($request->roles);
 
         return $employee;
     }
@@ -128,6 +136,7 @@ class EmployeeRepository
         $employee->profile_img = $profile_img_name;
         $employee->password = $request->password ? Hash::make($request->password) : $employee->password;
         $employee->update();
+        $employee->syncRoles($request->roles);
 
         return $employee;
     }
