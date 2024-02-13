@@ -63,13 +63,22 @@
         $(document).ready(function() {
             $('.logout-btn').on('click', function(e) {
                 e.preventDefault();
+                Swal.fire({
+                    text: "Are you sure you want to delete!",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/logout',
+                        }).done(function(res) {
+                            window.location.reload();
+                        })
+                    }
+                });
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/logout',
-                }).done(function(res) {
-                    window.location.reload();
-                })
 
 
             })

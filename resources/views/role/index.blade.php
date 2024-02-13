@@ -2,8 +2,10 @@
 @section('title', 'Roles')
 @section('content')
     <div>
+        {{-- @can('create_role') --}}
         <a href="{{ route('role.create') }}" class="btn btn-theme btn-sm"><i class="fas fa-plus-circle"></i> Add
             Role</a>
+         {{-- @endcan    --}}
     </div>
     <div class="card">
         <div class="card-body">

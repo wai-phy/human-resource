@@ -71,26 +71,45 @@
                                 <span>Home</span>
                             </a>
                         </li>
+                        @can('view_company_setting')
+                        <li>
+                            <a href="{{route('company-setting.show',1)}}">
+                                <i class="fa-regular fa-building"></i><span>Company Setting</span>
+                            </a>
+                        </li>
+                        @endcan
+
+                        {{-- @can('view_employee') --}}
                         <li>
                             <a href="{{ route('employee.index') }}">
                                 <i class="fas fa-users"></i><span>Employees</span>
                             </a>
                         </li>
+                        {{-- @endcan --}}
+
+                        {{-- @can('view_department') --}}
                         <li>
                             <a href="{{ route('department.index') }}">
                                 <i class="fa-solid fa-people-group"></i><span>Departments</span>
                             </a>
                         </li>
+                        {{-- @endcan --}}
+
+                        {{-- @can('view_role') --}}
                         <li>
                             <a href="{{ route('role.index') }}">
                                 <i class="fa-solid fa-shield-halved"></i><span>Roles</span>
                             </a>
                         </li>
+                        {{-- @endcan --}}
+
+                        {{-- @can('view_permission') --}}
                         <li>
                             <a href="{{ route('permission.index') }}">
                                 <i class="fa-solid fa-shield-halved"></i><span>Permissions</span>
                             </a>
                         </li>
+                        {{-- @endcan --}}
                         {{-- <li class="sidebar-dropdown">
                             <a href="#">
                                 <i class="fa fa-tachometer-alt"></i>

@@ -2,8 +2,10 @@
 @section('title', 'Employees')
 @section('content')
     <div>
+        {{-- @can('create_employee') --}}
         <a href="{{ route('employee.create') }}" class="btn btn-theme btn-sm"><i class="fas fa-plus-circle"></i> Add
             Employee</a>
+            {{-- @endcan --}}
     </div>
     <div class="card">
         <div class="card-body">

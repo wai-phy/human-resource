@@ -33,8 +33,16 @@ class RoleRepository
                 return $output;
             })
             ->addColumn('action', function ($each) {
-                $edit_icon = '<a href="' . route('role.edit', $each->id) . '" class="text-warning"><i class="fa-solid fa-pen-to-square"></i></a>';
-                $delete_icon = '<a href="#" data-id="'.$each->id.'" class="text-danger delete-btn"><i class="fa-solid fa-trash"></i></a>';
+                // $edit_icon = '';
+                // $delete_icon = '';
+
+                // if (auth()->user()->can('edit_permission')) {
+                    $edit_icon = '<a href="' . route('role.edit', $each->id) . '" class="text-warning"><i class="fa-solid fa-pen-to-square"></i></a>';
+                // }
+
+                // if (auth()->user()->can('edit_permission')) {
+                    $delete_icon = '<a href="#" data-id="'.$each->id.'" class="text-danger delete-btn"><i class="fa-solid fa-trash"></i></a>';
+                // }
                 return '<div class="action-icon">' . $edit_icon  .$delete_icon. '</div>';
             })
             ->editColumn('updated_at', function ($each) {
