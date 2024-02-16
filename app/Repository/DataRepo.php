@@ -25,4 +25,9 @@ class DataRepo
     {
         return app(PermissionRepository::class);
     }
+
+    public static function company(): CompanySettingRepository
+    {
+        return app(CompanySettingRepository::class);
+    }
 }

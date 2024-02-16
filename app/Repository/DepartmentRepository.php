@@ -26,16 +26,16 @@ class DepartmentRepository
             })
             ->addColumn('action', function ($each) {
                 
-                // $edit_icon = '';
-                // $delete_icon = '';
+                $edit_icon = '';
+                $delete_icon = '';
 
-                // if (auth()->user()->can('edit_department')) {
+                if (auth()->user()->can('edit_department')) {
                     $edit_icon = '<a href="' . route('department.edit', $each->id) . '" class="text-warning"><i class="fa-solid fa-pen-to-square"></i></a>';
-                // }
+                }
 
-                // if (auth()->user()->can('delete_department')) {
+                if (auth()->user()->can('delete_department')) {
                     $delete_icon = '<a href="#" data-id="'.$each->id.'" class="text-danger delete-btn"><i class="fa-solid fa-trash"></i></a>';
-                // }
+                }
                 
                 return '<div class="action-icon">' . $edit_icon  .$delete_icon. '</div>';
             })

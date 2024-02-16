@@ -36,9 +36,12 @@
                     <p class="mb-1">Break End Time</p>
                     <p class="text-muted mb-1">{{$setting->break_end_time}}</p>
                 </div>
+                @can('edit_company_setting')
                 <div class="col-12 text-center">
                     <a href="{{route('company-setting.edit',1)}}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i> Edit Company Setting</a>
                 </div>
+                @endcan
+                
             </div>
         </div>
     </div>
