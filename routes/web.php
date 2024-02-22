@@ -11,6 +11,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CompanySettingController;
+use Laragear\WebAuthn\WebAuthn;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,9 @@ use App\Http\Controllers\CompanySettingController;
 
 
 Auth::routes(['register'=>false]);
+// WebAuthn Routes
+WebAuthn::routes();
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [PageController::class, 'index'])->name('home');

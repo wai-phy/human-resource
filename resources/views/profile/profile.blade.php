@@ -53,6 +53,17 @@
     </div>
     <div class="card mb-3">
         <div class="card-body">
+            <h5>Biometric Authentication</h5>
+            <form id="biometric-register-form">
+                <button type="submit" class="btn biometric-register-btn" value="Register authenticator">
+                    <i class="fa-solid fa-fingerprint"></i>
+                    <i class="fa-solid fa-plus-circle"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
             <button type="submit" class="btn logout-btn btn-danger block form-control">Logout</button>
         </div>
     </div>
@@ -61,6 +72,25 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+
+            const register = event => {
+                event.preventDefault()
+
+                new WebAuthn({
+                    registerOptions: 'webauthn/register/options',
+                    register: 'webauthn/register',
+                }).register()
+                    .then(function(response){
+
+                    })
+                    .catch(function(response){
+                        console.log(response);
+                    })
+            }
+
+            document.getElementById('biometric-register-form').addEventListener('submit', register);
+
+
             $('.logout-btn').on('click', function(e) {
                 e.preventDefault();
                 Swal.fire({
@@ -78,9 +108,6 @@
                         })
                     }
                 });
-
-
-
             })
 
         })
